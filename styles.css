@@ -294,29 +294,36 @@ body {
 
 .stats {
     display: flex;
+    flex-direction: column;
     gap: 2rem;
     margin-top: 2rem;
 }
 
 .stat {
-    text-align: center;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    text-align: left;
 }
 
-.stat-number {
-    display: block;
+.stat i {
     font-size: 2.5rem;
-    font-weight: 700;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
+    flex-shrink: 0;
 }
 
 .stat-label {
-    font-size: 0.875rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.stat p {
+    font-size: 0.95rem;
     color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    line-height: 1.5;
+    margin-bottom: 0;
 }
 
 .about-image {
@@ -845,4 +852,11 @@ html {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-color);
 }
+
+
+
+.portfolio-content h3 {
+    color: var(--text-primary) !important;
+}
+
 
