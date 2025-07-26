@@ -437,70 +437,37 @@ class Navigation {
 // Scroll animations
 class ScrollAnimations {
     constructor() {
-        this.observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
         this.init();
     }
 
     init() {
-        this.setupIntersectionObserver();
-        this.setupCounterAnimations();
-    }
-
-    setupIntersectionObserver() {
-        const observer = new IntersectionObserver((entries) => {
+        // Create intersection observer
+        this.observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in-up');
+                    entry.target.classList.add('animate-in');
+                    
+                    // Add staggered animation for portfolio items
+                    if (entry.target.classList.contains('portfolio-item')) {
+                        const delay = Array.from(entry.target.parentElement.children).indexOf(entry.target) * 0.1;
+                        entry.target.style.animationDelay = `${delay}s`;
+                    }
                 }
             });
-        }, this.observerOptions);
-
-        // Observe all sections
-        const sections = document.querySelectorAll('section');
-        sections.forEach(section => {
-            observer.observe(section);
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         });
 
-        // Observe cards and other elements
-        const cards = document.querySelectorAll('.service-card, .portfolio-item, .process-step');
-        cards.forEach(card => {
-            observer.observe(card);
-        });
-    }
+        // Observe elements
+        const animateElements = document.querySelectorAll('.portfolio-item, .image-placeholder, .service-card, .contact-form, .process-step');
+        animateElements.forEach(el => this.observer.observe(el));
 
-    setupCounterAnimations() {
-        const counters = document.querySelectorAll('.stat-number');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.animateCounter(entry.target);
-                    observer.unobserve(entry.target);
-                }
-            });
+        // Add special animation for image placeholders
+        const imagePlaceholders = document.querySelectorAll('.image-placeholder');
+        imagePlaceholders.forEach((img, index) => {
+            img.style.animationDelay = `${index * 0.2}s`;
         });
-
-        counters.forEach(counter => {
-            observer.observe(counter);
-        });
-    }
-
-    animateCounter(element) {
-        const target = parseInt(element.textContent.replace(/\D/g, ''));
-        const suffix = element.textContent.replace(/\d/g, '');
-        let current = 0;
-        const increment = target / 50;
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                current = target;
-                clearInterval(timer);
-            }
-            element.textContent = Math.floor(current) + suffix;
-        }, 40);
     }
 }
 

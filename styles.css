@@ -188,6 +188,23 @@ body {
     border: none;
     cursor: pointer;
     font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
 }
 
 .btn-primary {
@@ -197,8 +214,8 @@ body {
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-xl);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl), 0 10px 25px rgba(99, 102, 241, 0.3);
 }
 
 .btn-secondary {
@@ -210,7 +227,7 @@ body {
 
 .btn-secondary:hover {
     background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
 }
 
 .scroll-indicator {
@@ -343,6 +360,101 @@ body {
     font-size: 4rem;
     color: var(--text-light);
     box-shadow: var(--shadow-xl);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    animation: float 3s ease-in-out infinite;
+}
+
+.image-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.image-placeholder:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(99, 102, 241, 0.3);
+    animation-play-state: paused;
+}
+
+.image-placeholder:hover::before {
+    left: 100%;
+}
+
+.image-placeholder i {
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.image-placeholder:hover i {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Classe especial para animação de pulso */
+.image-placeholder.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Animação para ícones dentro das imagens */
+.image-placeholder i,
+.portfolio-image i {
+    display: inline-block;
+    animation: iconFloat 2s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+@keyframes iconFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-5px) rotate(2deg);
+    }
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Animação de gradiente para image-placeholder */
+.image-placeholder {
+    background: linear-gradient(-45deg, #6366f1, #8b5cf6, #ec4899, #f59e0b);
+    background-size: 400% 400%;
+    animation: float 3s ease-in-out infinite, gradientShift 8s ease infinite;
+}
+
+/* Efeito especial ao scroll para portfolio */
+.portfolio-item {
+    transition: all 0.3s ease;
+}
+
+.portfolio-item.animate-in {
+    animation: slideInUp 0.6s ease forwards;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Services Section */
@@ -364,6 +476,8 @@ body {
     transition: all 0.3s ease;
     position: relative;
     border: 1px solid rgba(99, 102, 241, 0.1);
+    opacity: 0;
+    transform: translateY(50px);
 }
 
 .service-card:hover {
@@ -371,10 +485,30 @@ body {
     box-shadow: var(--shadow-xl);
 }
 
+.service-card.animate-in {
+    animation: slideInUp 0.6s ease forwards;
+}
+
 .service-card.featured {
     background: var(--gradient-primary);
     color: var(--text-light);
-    transform: scale(1.05);
+    transform: scale(1.05) translateY(50px);
+    opacity: 0;
+}
+
+.service-card.featured.animate-in {
+    animation: slideInScale 0.6s ease forwards;
+}
+
+@keyframes slideInScale {
+    from {
+        opacity: 0;
+        transform: scale(1.05) translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1.05) translateY(0);
+    }
 }
 
 .service-card.featured:hover {
@@ -481,6 +615,42 @@ body {
     justify-content: center;
     font-size: 3rem;
     color: var(--text-light);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+
+.portfolio-image::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.6s ease;
+}
+
+.portfolio-image i {
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.portfolio-item:hover .portfolio-image {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+}
+
+.portfolio-item:hover .portfolio-image::after {
+    width: 300px;
+    height: 300px;
+}
+
+.portfolio-item:hover .portfolio-image i {
+    transform: scale(1.2) rotate(-5deg);
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .portfolio-content {
@@ -545,6 +715,37 @@ body {
     color: var(--text-light);
     margin: 0 auto 1.5rem;
     box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.step-number::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent,
+        transparent
+    );
+    transform: translateX(-200%) translateY(-200%) rotate(45deg);
+    transition: transform 0.6s ease;
+}
+
+.step-number:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-xl), 0 0 30px rgba(99, 102, 241, 0.4);
+}
+
+.step-number:hover::before {
+    transform: translateX(200%) translateY(200%) rotate(45deg);
 }
 
 .process-step h3 {
@@ -557,6 +758,25 @@ body {
 .process-step p {
     color: var(--text-secondary);
     line-height: 1.6;
+}
+
+/* Efeito especial quando em viewport */
+.process-step.animate-in .step-number {
+    animation: numberPulse 0.6s ease forwards;
+}
+
+@keyframes numberPulse {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 /* Contact Section */
@@ -607,13 +827,16 @@ body {
     padding: 2.5rem;
     border-radius: 20px;
     box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.3s ease;
 }
 
-.form-group {
-    position: relative;
-    margin-bottom: 2rem;
+.contact-form.animate-in {
+    animation: slideInUp 0.8s ease forwards;
 }
 
+/* Animação especial para inputs */
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -622,8 +845,37 @@ body {
     border: 2px solid #e5e7eb;
     border-radius: 10px;
     font-size: 1rem;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
     background: var(--bg-primary);
+    transform: translateX(-20px);
+    opacity: 0;
+}
+
+.contact-form.animate-in .form-group input,
+.contact-form.animate-in .form-group select,
+.contact-form.animate-in .form-group textarea {
+    animation: slideInLeft 0.6s ease forwards;
+}
+
+.contact-form.animate-in .form-group:nth-child(1) input { animation-delay: 0.1s; }
+.contact-form.animate-in .form-group:nth-child(2) input { animation-delay: 0.2s; }
+.contact-form.animate-in .form-group:nth-child(3) select { animation-delay: 0.3s; }
+.contact-form.animate-in .form-group:nth-child(4) textarea { animation-delay: 0.4s; }
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 2rem;
 }
 
 .form-group input:focus,
@@ -860,6 +1112,26 @@ body {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 0 0 20px rgba(99, 102, 241, 0);
     }
 }
 
