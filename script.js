@@ -285,6 +285,10 @@ class ParticleSystem {
         const ctx = this.canvas.getContext('2d');
         const particles = [];
         
+        // Resize canvas properly
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        
         for (let i = 0; i < 50; i++) {
             particles.push({
                 x: Math.random() * this.canvas.width,
@@ -292,7 +296,8 @@ class ParticleSystem {
                 vx: (Math.random() - 0.5) * 2,
                 vy: (Math.random() - 0.5) * 2,
                 size: Math.random() * 4 + 1,
-                alpha: Math.random() * 0.5 + 0.2
+                alpha: Math.random() * 0.5 + 0.2,
+                hue: Math.random() * 60 + 220 // Blue to purple range
             });
         }
 
@@ -303,12 +308,15 @@ class ParticleSystem {
                 particle.x += particle.vx;
                 particle.y += particle.vy;
                 
-                if (particle.x < 0 || particle.x > this.canvas.width) particle.vx *= -1;
-                if (particle.y < 0 || particle.y > this.canvas.height) particle.vy *= -1;
+                // Wrap around screen
+                if (particle.x < 0) particle.x = this.canvas.width;
+                if (particle.x > this.canvas.width) particle.x = 0;
+                if (particle.y < 0) particle.y = this.canvas.height;
+                if (particle.y > this.canvas.height) particle.y = 0;
                 
                 ctx.beginPath();
                 ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(99, 102, 241, ${particle.alpha})`;
+                ctx.fillStyle = `hsla(${particle.hue}, 70%, 60%, ${particle.alpha})`;
                 ctx.fill();
             });
             
@@ -316,6 +324,12 @@ class ParticleSystem {
         };
         
         animate();
+
+        // Handle resize for fallback
+        window.addEventListener('resize', () => {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+        });
     }
 }
 
@@ -350,16 +364,55 @@ class Navigation {
 
     setupMobileMenu() {
         this.hamburger.addEventListener('click', () => {
-            this.navMenu.classList.toggle('active');
-            this.hamburger.classList.toggle('active');
+            this.toggleMobileMenu();
+        });
+
+        // Keyboard support for hamburger menu
+        this.hamburger.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.toggleMobileMenu();
+            }
         });
 
         this.navLinks.forEach(link => {
             link.addEventListener('click', () => {
-                this.navMenu.classList.remove('active');
-                this.hamburger.classList.remove('active');
+                this.closeMobileMenu();
             });
         });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!this.navbar.contains(e.target) && this.navMenu.classList.contains('active')) {
+                this.closeMobileMenu();
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.navMenu.classList.contains('active')) {
+                this.closeMobileMenu();
+            }
+        });
+    }
+
+    toggleMobileMenu() {
+        const isActive = this.navMenu.classList.toggle('active');
+        this.hamburger.classList.toggle('active');
+        
+        // Update aria attributes
+        this.hamburger.setAttribute('aria-expanded', isActive);
+        
+        // Manage focus
+        if (isActive) {
+            this.navLinks[0]?.focus();
+        }
+    }
+
+    closeMobileMenu() {
+        this.navMenu.classList.remove('active');
+        this.hamburger.classList.remove('active');
+        this.hamburger.setAttribute('aria-expanded', 'false');
     }
 
     setupSmoothScrolling() {
@@ -455,58 +508,132 @@ class ScrollAnimations {
 class ContactForm {
     constructor() {
         this.form = document.querySelector('.contact-form');
+        this.inputs = this.form?.querySelectorAll('input, select, textarea');
+        this.submitButton = this.form?.querySelector('button[type="submit"]');
+        this.statusElement = this.form?.querySelector('#form-status');
         this.init();
     }
 
     init() {
         if (this.form) {
             this.form.addEventListener('submit', this.handleSubmit.bind(this));
+            this.setupRealTimeValidation();
+        }
+    }
+
+    setupRealTimeValidation() {
+        this.inputs.forEach(input => {
+            input.addEventListener('blur', () => this.validateField(input));
+            input.addEventListener('input', () => this.clearError(input));
+        });
+    }
+
+    validateField(field) {
+        const value = field.value.trim();
+        const fieldName = field.name;
+        let isValid = true;
+        let errorMessage = '';
+
+        // Clear previous error
+        this.clearError(field);
+
+        // Check required fields
+        if (field.hasAttribute('required') && !value) {
+            isValid = false;
+            errorMessage = 'Este campo é obrigatório.';
+        }
+        // Email validation
+        else if (fieldName === 'email' && value) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                isValid = false;
+                errorMessage = 'Por favor, insira um e-mail válido.';
+            }
+        }
+        // Name validation
+        else if (fieldName === 'name' && value) {
+            if (value.length < 2) {
+                isValid = false;
+                errorMessage = 'Nome deve ter pelo menos 2 caracteres.';
+            }
+        }
+        // Message validation
+        else if (fieldName === 'message' && value) {
+            if (value.length < 10) {
+                isValid = false;
+                errorMessage = 'Mensagem deve ter pelo menos 10 caracteres.';
+            }
+        }
+
+        if (!isValid) {
+            this.showFieldError(field, errorMessage);
+        }
+
+        return isValid;
+    }
+
+    showFieldError(field, message) {
+        field.classList.add('error');
+        const errorElement = field.parentNode.querySelector('.error-message');
+        if (errorElement) {
+            errorElement.textContent = message;
+        }
+    }
+
+    clearError(field) {
+        field.classList.remove('error');
+        const errorElement = field.parentNode.querySelector('.error-message');
+        if (errorElement) {
+            errorElement.textContent = '';
         }
     }
 
     handleSubmit(e) {
         e.preventDefault();
         
+        // Validate all fields
+        let isFormValid = true;
+        this.inputs.forEach(input => {
+            if (!this.validateField(input)) {
+                isFormValid = false;
+            }
+        });
+
+        if (!isFormValid) {
+            this.showStatus('Por favor, corrija os erros antes de enviar.', 'error');
+            return;
+        }
+
         // Get form data
         const formData = new FormData(this.form);
         const data = Object.fromEntries(formData);
         
-        // Simple validation
-        if (!data.name || !data.email || !data.message) {
-            this.showMessage('Por favor, preencha todos os campos obrigatórios.', 'error');
-            return;
-        }
+        // Disable submit button
+        this.submitButton.disabled = true;
+        this.submitButton.textContent = 'Enviando...';
 
-        // Simulate form submission
-        this.showMessage('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
-        this.form.reset();
+        // Simulate form submission (replace with real implementation)
+        setTimeout(() => {
+            this.showStatus('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
+            this.form.reset();
+            this.submitButton.disabled = false;
+            this.submitButton.textContent = 'Enviar Mensagem';
+            
+            // Clear all errors
+            this.inputs.forEach(input => this.clearError(input));
+        }, 2000);
     }
 
-    showMessage(message, type) {
-        // Create message element
-        const messageEl = document.createElement('div');
-        messageEl.className = `form-message ${type}`;
-        messageEl.textContent = message;
+    showStatus(message, type) {
+        this.statusElement.textContent = message;
+        this.statusElement.className = type;
         
-        // Style the message
-        messageEl.style.cssText = `
-            padding: 1rem;
-            margin-top: 1rem;
-            border-radius: 8px;
-            font-weight: 500;
-            ${type === 'success' 
-                ? 'background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0;' 
-                : 'background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5;'
-            }
-        `;
-        
-        // Add to form
-        this.form.appendChild(messageEl);
-        
-        // Remove after 5 seconds
-        setTimeout(() => {
-            messageEl.remove();
-        }, 5000);
+        // Hide after 5 seconds for error messages
+        if (type === 'error') {
+            setTimeout(() => {
+                this.statusElement.style.display = 'none';
+            }, 5000);
+        }
     }
 }
 
@@ -534,20 +661,39 @@ class ParallaxEffects {
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    // Show loading screen
+    const loadingScreen = document.getElementById('loading-screen');
+    
     // Initialize WebGL particle system
     const canvas = document.getElementById('webgl-canvas');
     if (canvas) {
-        new ParticleSystem(canvas);
+        try {
+            new ParticleSystem(canvas);
+        } catch (error) {
+            console.warn('Failed to initialize particle system:', error);
+        }
     }
 
     // Initialize other components
-    new Navigation();
-    new ScrollAnimations();
-    new ContactForm();
-    new ParallaxEffects();
+    try {
+        new Navigation();
+        new ScrollAnimations();
+        new ContactForm();
+        new ParallaxEffects();
+    } catch (error) {
+        console.warn('Failed to initialize components:', error);
+    }
 
-    // Add loading animation
-    document.body.classList.add('loaded');
+    // Hide loading screen and show content
+    setTimeout(() => {
+        document.body.classList.add('loaded');
+        if (loadingScreen) {
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 300);
+        }
+    }, 1000);
 });
 
 // Add some CSS for loading state

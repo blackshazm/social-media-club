@@ -5,35 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social Media Club - Transformando Marcas no Digital</title>
     <meta name="description" content="Especialistas em gestão de mídias sociais, tráfego pago e marketing digital. Transformamos sua presença online em resultados reais.">
+    <meta name="keywords" content="marketing digital, redes sociais, tráfego pago, google ads, facebook ads, gestão de mídias sociais, ROI">
+    <meta name="author" content="Social Media Club">
+    <meta property="og:title" content="Social Media Club - Transformando Marcas no Digital">
+    <meta property="og:description" content="Especialistas em gestão de mídias sociais, tráfego pago e marketing digital. Transformamos sua presença online em resultados reais.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://xsddbwtj.manus.space">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" role="navigation" aria-label="Menu principal">
         <div class="nav-container">
             <div class="nav-logo">
                 <h2>Social Media Club</h2>
             </div>
             <ul class="nav-menu">
-                <li><a href="#home">Início</a></li>
-                <li><a href="#about">Sobre</a></li>
-                <li><a href="#services">Serviços</a></li>
-                <li><a href="#portfolio">Portfólio</a></li>
-                <li><a href="#contact">Contato</a></li>
+                <li><a href="#home" aria-label="Ir para início">Início</a></li>
+                <li><a href="#about" aria-label="Ir para sobre nós">Sobre</a></li>
+                <li><a href="#services" aria-label="Ir para serviços">Serviços</a></li>
+                <li><a href="#portfolio" aria-label="Ir para portfólio">Portfólio</a></li>
+                <li><a href="#contact" aria-label="Ir para contato">Contato</a></li>
             </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="hamburger" aria-label="Menu mobile" aria-expanded="false" tabindex="0" role="button">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section with WebGL -->
     <section id="home" class="hero">
-        <canvas id="webgl-canvas"></canvas>
+        <canvas id="webgl-canvas" aria-hidden="true"></canvas>
         <div class="hero-content">
             <h1 class="hero-title">
                 Transformamos sua <span class="gradient-text">presença digital</span> em resultados reais
@@ -42,11 +48,11 @@
                 Somos especialistas em gestão de mídias sociais, tráfego pago e estratégias de marketing digital que geram ROI comprovado.
             </p>
             <div class="hero-buttons">
-                <a href="#contact" class="btn btn-primary">Começar Agora</a>
-                <a href="#about" class="btn btn-secondary">Conhecer Mais</a>
+                <a href="#contact" class="btn btn-primary" aria-label="Começar projeto agora">Começar Agora</a>
+                <a href="#about" class="btn btn-secondary" aria-label="Conhecer mais sobre nós">Conhecer Mais</a>
             </div>
         </div>
-        <div class="scroll-indicator">
+        <div class="scroll-indicator" aria-hidden="true">
             <div class="scroll-arrow"></div>
         </div>
     </section>
@@ -275,20 +281,23 @@
                     </div>
                 </div>
                 
-                <form class="contact-form">
+                <form class="contact-form" novalidate>
                     <div class="form-group">
-                        <input type="text" id="name" name="name" required>
+                        <input type="text" id="name" name="name" required minlength="2" maxlength="50">
                         <label for="name">Seu Nome</label>
+                        <span class="error-message" aria-live="polite"></span>
                     </div>
                     
                     <div class="form-group">
                         <input type="email" id="email" name="email" required>
                         <label for="email">Seu E-mail</label>
+                        <span class="error-message" aria-live="polite"></span>
                     </div>
                     
                     <div class="form-group">
-                        <input type="text" id="company" name="company">
+                        <input type="text" id="company" name="company" maxlength="100">
                         <label for="company">Sua Empresa</label>
+                        <span class="error-message" aria-live="polite"></span>
                     </div>
                     
                     <div class="form-group">
@@ -300,14 +309,17 @@
                             <option value="complete">Pacote Completo</option>
                         </select>
                         <label for="service">Serviço de Interesse</label>
+                        <span class="error-message" aria-live="polite"></span>
                     </div>
                     
                     <div class="form-group">
-                        <textarea id="message" name="message" rows="4" required></textarea>
+                        <textarea id="message" name="message" rows="4" required minlength="10" maxlength="500"></textarea>
                         <label for="message">Sua Mensagem</label>
+                        <span class="error-message" aria-live="polite"></span>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+                    <button type="submit" class="btn btn-primary" aria-describedby="form-status">Enviar Mensagem</button>
+                    <div id="form-status" aria-live="polite"></div>
                 </form>
             </div>
         </div>
@@ -360,6 +372,11 @@
     </footer>
 
     <script src="script.js"></script>
+    
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading" aria-hidden="true">
+        <div class="loading-spinner"></div>
+    </div>
 </body>
 </html>
 

@@ -1,0 +1,101 @@
+{
+  "HTML5 Template": {
+    "prefix": "html5",
+    "body": [
+      "<!DOCTYPE html>",
+      "<html lang=\"pt-BR\">",
+      "<head>",
+      "    <meta charset=\"UTF-8\">",
+      "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+      "    <title>$1</title>",
+      "    <link rel=\"stylesheet\" href=\"styles.css\">",
+      "</head>",
+      "<body>",
+      "    $2",
+      "    <script src=\"script.js\"></script>",
+      "</body>",
+      "</html>"
+    ],
+    "description": "Template HTML5 completo"
+  },
+  "CSS Section Comment": {
+    "prefix": "csection",
+    "body": [
+      "/* ==========================================",
+      "   $1",
+      "   ========================================== */"
+    ],
+    "description": "Comentário de seção CSS"
+  },
+  "CSS Media Query": {
+    "prefix": "mq",
+    "body": [
+      "@media (max-width: ${1:768px}) {",
+      "    $2",
+      "}"
+    ],
+    "description": "Media query responsiva"
+  },
+  "CSS Flexbox Center": {
+    "prefix": "flexcenter",
+    "body": [
+      "display: flex;",
+      "align-items: center;",
+      "justify-content: center;"
+    ],
+    "description": "Flexbox para centralizar"
+  },
+  "CSS Grid Layout": {
+    "prefix": "gridlayout",
+    "body": [
+      "display: grid;",
+      "grid-template-columns: ${1:repeat(auto-fit, minmax(300px, 1fr))};",
+      "gap: ${2:2rem};"
+    ],
+    "description": "Grid layout responsivo"
+  },
+  "Hero Section": {
+    "prefix": "hero",
+    "body": [
+      "<section class=\"hero\">",
+      "    <div class=\"hero-content\">",
+      "        <h1 class=\"hero-title\">$1</h1>",
+      "        <p class=\"hero-subtitle\">$2</p>",
+      "        <div class=\"hero-buttons\">",
+      "            <a href=\"#$3\" class=\"btn btn-primary\">$4</a>",
+      "            <a href=\"#$5\" class=\"btn btn-secondary\">$6</a>",
+      "        </div>",
+      "    </div>",
+      "</section>"
+    ],
+    "description": "Seção hero completa"
+  },
+  "Card Component": {
+    "prefix": "card",
+    "body": [
+      "<div class=\"card\">",
+      "    <div class=\"card-header\">",
+      "        <h3>$1</h3>",
+      "    </div>",
+      "    <div class=\"card-body\">",
+      "        <p>$2</p>",
+      "    </div>",
+      "    <div class=\"card-footer\">",
+      "        <a href=\"#\" class=\"btn\">$3</a>",
+      "    </div>",
+      "</div>"
+    ],
+    "description": "Componente de card"
+  },
+  "Form Group": {
+    "prefix": "formgroup",
+    "body": [
+      "<div class=\"form-group\">",
+      "    <input type=\"${1:text}\" id=\"${2:field}\" name=\"${2:field}\" ${3:required}>",
+      "    <label for=\"${2:field}\">$4</label>",
+      "    <span class=\"error-message\" aria-live=\"polite\"></span>",
+      "</div>"
+    ],
+    "description": "Grupo de formulário com validação"
+  }
+}

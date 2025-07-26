@@ -1,0 +1,192 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    // Editor
+    "editor.fontSize": 14,
+    "editor.fontFamily": "'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, 'Courier New', monospace",
+    "editor.fontLigatures": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.wordWrap": "on",
+    "editor.minimap.enabled": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    
+    // Files
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/.git": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true
+    },
+    "files.associations": {
+      "*.html": "html",
+      "*.css": "css",
+      "*.js": "javascript"
+    },
+    
+    // Live Server
+    "liveServer.settings.donotShowInfoMsg": true,
+    "liveServer.settings.donotVerifyTags": true,
+    "liveServer.settings.port": 3000,
+    "liveServer.settings.root": "/",
+    "liveServer.settings.CustomBrowser": "chrome",
+    "liveServer.settings.AdvanceCustomBrowserCmdLine": "--incognito --remote-debugging-port=9222",
+    
+    // HTML
+    "html.format.enable": true,
+    "html.format.wrapLineLength": 120,
+    "html.format.indentInnerHtml": true,
+    "html.suggest.html5": true,
+    "html.autoClosingTags": true,
+    "html.completion.attributeDefaultValue": "doublequotes",
+    
+    // CSS
+    "css.validate": true,
+    "css.lint.unknownAtRules": "ignore",
+    "css.completion.completePropertyWithSemicolon": true,
+    "css.completion.triggerPropertyValueCompletion": true,
+    
+    // JavaScript
+    "javascript.suggest.autoImports": true,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "javascript.format.enable": true,
+    "javascript.validate.enable": true,
+    
+    // Prettier
+    "prettier.enable": true,
+    "prettier.singleQuote": true,
+    "prettier.semi": true,
+    "prettier.tabWidth": 2,
+    "prettier.trailingComma": "es5",
+    "prettier.printWidth": 80,
+    "prettier.htmlWhitespaceSensitivity": "css",
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[markdown]": {
+      "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    },
+    
+    // Emmet
+    "emmet.includeLanguages": {
+      "javascript": "javascriptreact"
+    },
+    "emmet.triggerExpansionOnTab": true,
+    "emmet.showExpandedAbbreviation": "always",
+    
+    // Git
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "git.enableCommitSigning": false,
+    
+    // GitLens
+    "gitlens.hovers.currentLine.over": "line",
+    "gitlens.currentLine.enabled": true,
+    "gitlens.blame.highlight.enabled": false,
+    
+    // Spell Checker
+    "cSpell.enabled": true,
+    "cSpell.language": "en,pt,pt_BR",
+    "cSpell.words": [
+      "WebGL",
+      "RGBA",
+      "viewport",
+      "rgba",
+      "flexbox",
+      "LinkedIn",
+      "WhatsApp",
+      "Instagram",
+      "fontawesome",
+      "cloudflare",
+      "cdnjs",
+      "googleapis",
+      "socialmediaclub",
+      "dropdown",
+      "navbar",
+      "frontend",
+      "backend",
+      "lightbox",
+      "parallax",
+      "scrollable",
+      "responsivo",
+      "acessibilidade"
+    ],
+    
+    // Terminal
+    "terminal.integrated.fontSize": 13,
+    "terminal.integrated.fontFamily": "'Cascadia Code', 'Fira Code', 'JetBrains Mono', monospace",
+    
+    // Explorer
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "explorer.compactFolders": false,
+    
+    // Workbench
+    "workbench.colorTheme": "Default Dark+",
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.startupEditor": "welcomePage",
+    "workbench.editor.enablePreview": false,
+    
+    // Security
+    "security.workspace.trust.untrustedFiles": "open"
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Open with Live Server",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceFolder}/index.html",
+        "serverReadyAction": {
+          "pattern": "Server running at ([^\\s]+)",
+          "uriFormat": "%s",
+          "action": "openExternally"
+        }
+      }
+    ]
+  },
+  "extensions": {
+    "recommendations": [
+      "ritwickdey.liveserver",
+      "esbenp.prettier-vscode",
+      "formulahendry.auto-rename-tag",
+      "xabikos.javascriptsnippets",
+      "ecmel.vscode-html-css",
+      "christian-kohler.path-intellisense",
+      "zignd.html-css-class-completion",
+      "pranaygp.vscode-css-peek",
+      "github.vscode-pull-request-github",
+      "eamodio.gitlens",
+      "streetsidesoftware.code-spell-checker",
+      "yzhang.markdown-all-in-one",
+      "wallabyjs.quokka-vscode",
+      "pkief.material-icon-theme",
+      "ms-vsliveshare.vsliveshare"
+    ]
+  }
+}

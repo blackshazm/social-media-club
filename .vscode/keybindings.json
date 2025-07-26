@@ -1,0 +1,40 @@
+[
+  {
+    "key": "ctrl+shift+l",
+    "command": "workbench.action.tasks.runTask",
+    "args": "🚀 Abrir Live Server"
+  },
+  {
+    "key": "ctrl+shift+k",
+    "command": "workbench.action.tasks.runTask",
+    "args": "🔥 Parar Live Server"
+  },
+  {
+    "key": "ctrl+shift+g",
+    "command": "workbench.action.tasks.runTask",
+    "args": "📋 Git Status"
+  },
+  {
+    "key": "ctrl+shift+a",
+    "command": "workbench.action.tasks.runTask",
+    "args": "➕ Git Add All"
+  },
+  {
+    "key": "ctrl+shift+p",
+    "command": "workbench.action.tasks.runTask",
+    "args": "📤 Git Push"
+  },
+  {
+    "key": "ctrl+shift+b",
+    "command": "workbench.action.tasks.runTask",
+    "args": "🌐 Abrir no Navegador"
+  },
+  {
+    "key": "alt+shift+f",
+    "command": "editor.action.formatDocument"
+  },
+  {
+    "key": "ctrl+k ctrl+f",
+    "command": "workbench.files.action.focusFilesExplorer"
+  }
+]

@@ -1,0 +1,123 @@
+{
+  "Console Log": {
+    "prefix": "clog",
+    "body": ["console.log('$1:', $1);"],
+    "description": "Console.log com variável"
+  },
+  "Function": {
+    "prefix": "func",
+    "body": [
+      "function $1($2) {",
+      "    $3",
+      "}"
+    ],
+    "description": "Função JavaScript"
+  },
+  "Arrow Function": {
+    "prefix": "afunc",
+    "body": [
+      "const $1 = ($2) => {",
+      "    $3",
+      "};"
+    ],
+    "description": "Arrow function"
+  },
+  "Async Function": {
+    "prefix": "async",
+    "body": [
+      "async function $1($2) {",
+      "    try {",
+      "        $3",
+      "    } catch (error) {",
+      "        console.error('Error in $1:', error);",
+      "    }",
+      "}"
+    ],
+    "description": "Função assíncrona com try-catch"
+  },
+  "Event Listener": {
+    "prefix": "listen",
+    "body": [
+      "${1:element}.addEventListener('${2:click}', (${3:e}) => {",
+      "    ${4:e.preventDefault();}",
+      "    $5",
+      "});"
+    ],
+    "description": "Event listener"
+  },
+  "Query Selector": {
+    "prefix": "qs",
+    "body": ["document.querySelector('$1')"],
+    "description": "document.querySelector"
+  },
+  "Query Selector All": {
+    "prefix": "qsa",
+    "body": ["document.querySelectorAll('$1')"],
+    "description": "document.querySelectorAll"
+  },
+  "Class Constructor": {
+    "prefix": "class",
+    "body": [
+      "class $1 {",
+      "    constructor($2) {",
+      "        $3",
+      "        this.init();",
+      "    }",
+      "",
+      "    init() {",
+      "        $4",
+      "    }",
+      "}"
+    ],
+    "description": "Classe JavaScript"
+  },
+  "Promise": {
+    "prefix": "promise",
+    "body": [
+      "new Promise((resolve, reject) => {",
+      "    $1",
+      "})"
+    ],
+    "description": "Nova Promise"
+  },
+  "Fetch API": {
+    "prefix": "fetch",
+    "body": [
+      "fetch('$1')",
+      "    .then(response => response.json())",
+      "    .then(data => {",
+      "        $2",
+      "    })",
+      "    .catch(error => {",
+      "        console.error('Fetch error:', error);",
+      "    });"
+    ],
+    "description": "Fetch API com tratamento de erro"
+  },
+  "WebGL Context": {
+    "prefix": "webgl",
+    "body": [
+      "const canvas = document.getElementById('$1');",
+      "const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');",
+      "",
+      "if (!gl) {",
+      "    console.warn('WebGL not supported');",
+      "    return;",
+      "}",
+      "",
+      "$2"
+    ],
+    "description": "Contexto WebGL"
+  },
+  "Animation Frame": {
+    "prefix": "raf",
+    "body": [
+      "const animate = () => {",
+      "    $1",
+      "    requestAnimationFrame(animate);",
+      "};",
+      "animate();"
+    ],
+    "description": "Request Animation Frame loop"
+  }
+}
