@@ -1,0 +1,37 @@
+{
+  "name": "social-media-club",
+  "version": "1.1.0",
+  "description": "Site oficial do Social Media Club - Especialistas em marketing digital",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "serve": "npx serve .",
+    "test": "echo \"Projeto frontend puro - abra index.html no navegador\"",
+    "deploy": "vercel --prod",
+    "deploy:preview": "vercel"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SEU_USUARIO/social-media-club.git"
+  },
+  "keywords": [
+    "marketing-digital",
+    "redes-sociais",
+    "trafego-pago",
+    "webgl",
+    "frontend",
+    "responsivo",
+    "acessibilidade"
+  ],
+  "author": "Social Media Club",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SEU_USUARIO/social-media-club/issues"
+  },
+  "homepage": "https://xsddbwtj.manus.space",
+  "devDependencies": {},
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

@@ -1,0 +1,108 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "🚀 Abrir Live Server",
+			"type": "shell",
+			"command": "code",
+			"args": [
+				"--command",
+				"extension.liveServer.goLive"
+			],
+			"group": "build",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "🔥 Parar Live Server",
+			"type": "shell",
+			"command": "code",
+			"args": [
+				"--command",
+				"extension.liveServer.goOffline"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "📋 Git Status",
+			"type": "shell",
+			"command": "git",
+			"args": ["status"],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "➕ Git Add All",
+			"type": "shell",
+			"command": "git",
+			"args": ["add", "."],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "📤 Git Push",
+			"type": "shell",
+			"command": "git",
+			"args": ["push"],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "🌐 Abrir no Navegador",
+			"type": "shell",
+			"command": "start",
+			"args": ["index.html"],
+			"windows": {
+				"command": "start",
+				"args": ["index.html"]
+			},
+			"linux": {
+				"command": "xdg-open",
+				"args": ["index.html"]
+			},
+			"osx": {
+				"command": "open",
+				"args": ["index.html"]
+			},
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		}
+	]
+}
