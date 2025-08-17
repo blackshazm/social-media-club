@@ -1,22 +1,79 @@
+// Performance monitoring
+const performanceObserver = new PerformanceObserver((list) => {
+    list.getEntries().forEach((entry) => {
+        if (entry.entryType === 'largest-contentful-paint') {
+            console.log('LCP:', entry.startTime);
+        }
+    });
+});
+
+try {
+    performanceObserver.observe({entryTypes: ['largest-contentful-paint']});
+} catch (e) {
+    // Fallback para navegadores antigos
+}
+
+// Intersection Observer para lazy loading
+const observerOptions = {
+    root: null,
+    rootMargin: '50px',
+    threshold: 0.1
+};
+
+const observeElements = (elements, callback) => {
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    callback(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        elements.forEach(el => observer.observe(el));
+    } else {
+        // Fallback para navegadores antigos
+        elements.forEach(callback);
+    }
+};
+
 // WebGL Particle System
 class ParticleSystem {
     constructor(canvas) {
         this.canvas = canvas;
-        this.gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        this.gl = null;
+        this.isWebGLSupported = this.initWebGL();
         
-        if (!this.gl) {
+        if (!this.isWebGLSupported) {
             console.warn('WebGL not supported, falling back to canvas animation');
             this.fallbackAnimation();
             return;
         }
 
         this.particles = [];
-        this.particleCount = 150;
+        this.particleCount = Math.min(150, Math.floor(window.innerWidth / 10)); // Adaptativo
         this.mouse = { x: 0, y: 0 };
         this.time = 0;
+        this.isAnimating = false;
         
         this.init();
-        this.animate();
+    }
+
+    initWebGL() {
+        try {
+            this.gl = this.canvas.getContext('webgl', {
+                alpha: true,
+                antialias: false,
+                depth: false,
+                stencil: false,
+                powerPreference: 'high-performance'
+            }) || this.canvas.getContext('experimental-webgl');
+            
+            return !!this.gl;
+        } catch (e) {
+            return false;
+        }
     }
 
     init() {
@@ -24,11 +81,23 @@ class ParticleSystem {
         this.setupShaders();
         this.createParticles();
         this.setupEventListeners();
+        
+        // Iniciar animação apenas quando necessário
+        requestIdleCallback(() => {
+            this.animate();
+        });
     }
 
     resizeCanvas() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        const rect = this.canvas.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2); // Limitar DPR para performance
+        
+        this.canvas.width = rect.width * dpr;
+        this.canvas.height = rect.height * dpr;
+        
+        this.canvas.style.width = rect.width + 'px';
+        this.canvas.style.height = rect.height + 'px';
+        
         this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     }
 
@@ -262,10 +331,37 @@ class ParticleSystem {
     }
 
     animate() {
-        this.time += 1;
-        this.updateParticles();
-        this.render();
-        requestAnimationFrame(() => this.animate());
+        if (!this.isAnimating) {
+            this.isAnimating = true;
+            
+            const frame = () => {
+                // Throttle para 60fps ou menos em devices baixa performance
+                if (performance.now() - this.lastFrameTime >= 16.67) {
+                    this.time += 1;
+                    this.updateParticles();
+                    this.render();
+                    this.lastFrameTime = performance.now();
+                }
+                
+                if (this.isAnimating) {
+                    requestAnimationFrame(frame);
+                }
+            };
+            
+            this.lastFrameTime = 0;
+            requestAnimationFrame(frame);
+        }
+    }
+
+    // Método para pausar animação quando não visível
+    pauseAnimation() {
+        this.isAnimating = false;
+    }
+
+    resumeAnimation() {
+        if (!this.isAnimating) {
+            this.animate();
+        }
     }
 
     setupEventListeners() {
@@ -534,20 +630,48 @@ class ParallaxEffects {
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize WebGL particle system
+    // Initialize WebGL particle system with visibility observer
     const canvas = document.getElementById('webgl-canvas');
     if (canvas) {
-        new ParticleSystem(canvas);
+        const particleSystem = new ParticleSystem(canvas);
+        
+        // Pause/resume animation based on visibility
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (particleSystem.pauseAnimation && particleSystem.resumeAnimation) {
+                        if (entry.isIntersecting) {
+                            particleSystem.resumeAnimation();
+                        } else {
+                            particleSystem.pauseAnimation();
+                        }
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            observer.observe(canvas);
+        }
     }
 
-    // Initialize other components
-    new Navigation();
-    new ScrollAnimations();
-    new ContactForm();
-    new ParallaxEffects();
+    // Initialize other components with lazy loading
+    requestIdleCallback(() => {
+        new Navigation();
+        new ScrollAnimations();
+        new ContactForm();
+        new ParallaxEffects();
+    });
 
     // Add loading animation
     document.body.classList.add('loaded');
+    
+    // Remove preloader if exists
+    const preloader = document.querySelector('.preloader');
+    if (preloader) {
+        setTimeout(() => {
+            preloader.style.opacity = '0';
+            setTimeout(() => preloader.remove(), 300);
+        }, 500);
+    }
 });
 
 // Add some CSS for loading state

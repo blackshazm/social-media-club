@@ -3,37 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Media Club - Transformando Marcas no Digital</title>
-    <meta name="description" content="Especialistas em gestão de mídias sociais, tráfego pago e marketing digital. Transformamos sua presença online em resultados reais.">
+    <title>Social Media Club - Transformando Marcas no Digital | Marketing Digital ROI Comprovado</title>
+    <meta name="description" content="Especialistas em gestão de mídias sociais, tráfego pago e marketing digital. Transformamos sua presença online em resultados reais com ROI comprovado.">
+    <meta name="keywords" content="marketing digital, redes sociais, tráfego pago, ROI, gestão de mídias sociais, google ads, facebook ads, instagram marketing">
+    <meta name="author" content="Social Media Club">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://xsddbwtj.manus.space/">
+    <meta property="og:title" content="Social Media Club - Transformando Marcas no Digital">
+    <meta property="og:description" content="Especialistas em gestão de mídias sociais, tráfego pago e marketing digital. Transformamos sua presença online em resultados reais.">
+    <meta property="og:image" content="https://xsddbwtj.manus.space/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://xsddbwtj.manus.space/">
+    <meta property="twitter:title" content="Social Media Club - Transformando Marcas no Digital">
+    <meta property="twitter:description" content="Especialistas em gestão de mídias sociais, tráfego pago e marketing digital.">
+    <meta property="twitter:image" content="https://xsddbwtj.manus.space/og-image.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://xsddbwtj.manus.space/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Preconnect para otimização de performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- Structured Data Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Social Media Club",
+      "description": "Especialistas em gestão de mídias sociais, tráfego pago e marketing digital",
+      "url": "https://xsddbwtj.manus.space/",
+      "logo": "https://xsddbwtj.manus.space/logo.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "areaServed": "BR",
+        "availableLanguage": "Portuguese"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "BR"
+      },
+      "sameAs": [
+        "https://instagram.com/socialmediaclub",
+        "https://linkedin.com/company/socialmediaclub"
+      ]
+    }
+    </script>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" role="navigation" aria-label="Menu principal">
         <div class="nav-container">
             <div class="nav-logo">
                 <h2>Social Media Club</h2>
             </div>
-            <ul class="nav-menu">
-                <li><a href="#home">Início</a></li>
-                <li><a href="#about">Sobre</a></li>
-                <li><a href="#services">Serviços</a></li>
-                <li><a href="#portfolio">Portfólio</a></li>
-                <li><a href="#contact">Contato</a></li>
+            <ul class="nav-menu" role="menubar">
+                <li role="menuitem"><a href="#home" aria-label="Ir para seção inicial">Início</a></li>
+                <li role="menuitem"><a href="#about" aria-label="Ir para seção sobre">Sobre</a></li>
+                <li role="menuitem"><a href="#services" aria-label="Ir para seção serviços">Serviços</a></li>
+                <li role="menuitem"><a href="#portfolio" aria-label="Ir para seção portfólio">Portfólio</a></li>
+                <li role="menuitem"><a href="#contact" aria-label="Ir para seção contato">Contato</a></li>
             </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+            <button class="hamburger" aria-label="Abrir menu mobile" aria-expanded="false" aria-controls="nav-menu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </button>
         </div>
     </nav>
 
     <!-- Hero Section with WebGL -->
     <section id="home" class="hero">
-        <canvas id="webgl-canvas"></canvas>
+        <canvas id="webgl-canvas" aria-hidden="true"></canvas>
         <div class="hero-content">
             <h1 class="hero-title">
                 Deixe de ser Invisível Online. Conquiste a Liderança do seu Mercado.
@@ -45,8 +102,8 @@
                 Você se sente frustrado por investir em marketing e não ver resultados? Sabemos como é difícil ver a concorrência crescer enquanto sua marca parece invisível online. Isso não precisa ser assim.
             </p>
             <div class="hero-buttons">
-                <a href="#contact" class="btn btn-primary">Agendar Diagnóstico Gratuito</a>
-                <a href="#about" class="btn btn-secondary">Conhecer Mais</a>
+                <a href="#contact" class="btn btn-primary" aria-label="Agendar diagnóstico gratuito">Agendar Diagnóstico Gratuito</a>
+                <a href="#about" class="btn btn-secondary" aria-label="Conhecer mais sobre nossos serviços">Conhecer Mais</a>
             </div>
         </div>
         <div class="scroll-indicator">
@@ -363,6 +420,21 @@
     </footer>
 
     <script src="script.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>
 
