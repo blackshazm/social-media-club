@@ -1,6 +1,9 @@
 {
   "version": 2,
   "trailingSlash": false,
+  "cleanUrls": true,
+  "buildCommand": "echo 'Static site - no build required'",
+  "outputDirectory": ".",
   "rewrites": [
     {
       "source": "/(.*)",
