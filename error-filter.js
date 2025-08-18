@@ -11,7 +11,13 @@
         'PIN Company Discounts',
         'Vue Devtools',
         'Failed to fetch',
-        'A listener indicated an asynchronous response'
+        'A listener indicated an asynchronous response',
+        'web_accessible_resources',
+        'pinComponent.js',
+        'contentscript.js',
+        'Empty token!',
+        'Invalid data',
+        'ERR_FAILED'
     ];
     
     // Interceptar erros do console apenas em produção

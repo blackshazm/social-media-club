@@ -443,9 +443,10 @@
                     // Check for updates
                     registration.addEventListener('updatefound', () => {
                         // Auto-reload quando houver update
-                        if (registration.installing) {
-                            registration.installing.addEventListener('statechange', () => {
-                                if (registration.installing.state === 'installed') {
+                        const installingWorker = registration.installing;
+                        if (installingWorker) {
+                            installingWorker.addEventListener('statechange', () => {
+                                if (installingWorker.state === 'installed') {
                                     if (navigator.serviceWorker.controller) {
                                         // Novo SW instalado, reload a página
                                         window.location.reload();
