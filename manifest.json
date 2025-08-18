@@ -1,0 +1,22 @@
+{
+  "name": "Social Media Club",
+  "short_name": "SMC",
+  "description": "Especialistas em gestão de mídias sociais, tráfego pago e marketing digital",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["business", "marketing", "productivity"],
+  "lang": "pt-BR",
+  "scope": "/",
+  "id": "/"
+}

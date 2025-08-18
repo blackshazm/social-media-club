@@ -1,8 +1,8 @@
-// Performance monitoring
+// Performance monitoring com throttling
 const performanceObserver = new PerformanceObserver((list) => {
     list.getEntries().forEach((entry) => {
         if (entry.entryType === 'largest-contentful-paint') {
-            console.log('LCP:', entry.startTime);
+            console.log('[Performance] LCP:', entry.startTime.toFixed(0) + 'ms');
         }
     });
 });
@@ -11,6 +11,7 @@ try {
     performanceObserver.observe({entryTypes: ['largest-contentful-paint']});
 } catch (e) {
     // Fallback para navegadores antigos
+    console.log('[Performance] LCP monitoring not supported');
 }
 
 // Intersection Observer para lazy loading
