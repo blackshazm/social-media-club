@@ -110,7 +110,7 @@ git commit -m "perf: otimização de performance"
 - "Site oficial do Social Media Club - Especialistas em marketing digital com WebGL"
 
 ### Adicionar website
-- https://xsddbwtj.manus.space (ou sua URL do GitHub Pages)
+- https://socialmidiaclub.com.br (ou sua URL do GitHub Pages)
 
 ## 🔧 Estrutura Final do Repositório
 

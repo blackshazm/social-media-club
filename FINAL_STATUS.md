@@ -98,7 +98,7 @@ git push -u origin main
 ### 🌐 **URLs do Projeto:**
 
 - **📱 Repositório GitHub:** https://github.com/blackshazm/social-media-club
-- **🌍 Site atual:** https://xsddbwtj.manus.space
+- **🌍 Site atual:** https://socialmidiaclub.com.br
 - **🔗 GitHub Pages:** (configure nas Settings → Pages)
 
 ### 🚀 **Próximos Passos Opcionais:**
@@ -114,7 +114,7 @@ git push -u origin main
 #### 2️⃣ **Personalizar Repositório:**
 1. Adicione topics: `marketing-digital`, `webgl`, `frontend`, `responsivo`
 2. Edite a descrição: "Site oficial do Social Media Club - WebGL"
-3. Adicione website: https://xsddbwtj.manus.space
+3. Adicione website: https://socialmidiaclub.com.br
 
 #### 3️⃣ **Para futuras atualizações:**
 ```bash

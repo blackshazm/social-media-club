@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://xsddbwtj.manus.space/sitemap.xml
+Sitemap: https://socialmidiaclub.com.br/sitemap.xml
 
 # Otimizações para crawlers
 Crawl-delay: 1

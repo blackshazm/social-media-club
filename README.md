@@ -1,7 +1,7 @@
 # Social Media Club - Site Oficial
 
 ## 🚀 Site Online
-**URL:** https://xsddbwtj.manus.space
+**URL:** https://socialmidiaclub.com.br
 
 ## 📋 Sobre o Projeto
 
@@ -117,7 +117,7 @@ social-media-club/
 3. Acesse: http://localhost:8000
 
 ### Deploy
-O site está hospedado em: **https://xsddbwtj.manus.space**
+O site está hospedado em: **https://socialmidiaclub.com.br**
 
 ## 📞 Contato Fictício (Para Demonstração)
 - **Email:** contato@socialmediaclub.com
