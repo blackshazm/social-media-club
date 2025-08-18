@@ -122,6 +122,21 @@ img, video, iframe {
     display: none;
     flex-direction: column;
     cursor: pointer;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.hamburger:hover {
+    background-color: rgba(99, 102, 241, 0.1);
+}
+
+.hamburger:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
 .hamburger span {
@@ -129,7 +144,23 @@ img, video, iframe {
     height: 3px;
     background: var(--text-primary);
     margin: 3px 0;
-    transition: 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 2px;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+    background: var(--primary-color);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(20px);
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+    background: var(--primary-color);
 }
 
 /* Hero Section */
@@ -772,6 +803,7 @@ img, video, iframe {
 @media (max-width: 768px) {
     .hamburger {
         display: flex;
+        z-index: 1001;
     }
 
     .nav-menu {
@@ -779,22 +811,48 @@ img, video, iframe {
         left: -100%;
         top: 70px;
         flex-direction: column;
-        background-color: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
+        background-color: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
         width: 100%;
+        height: calc(100vh - 70px);
         text-align: center;
-        transition: 0.3s;
-        box-shadow: var(--shadow-lg);
-        padding: 2rem 0;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-xl);
+        padding: 3rem 0;
+        z-index: 1000;
+        overflow-y: auto;
     }
 
     .nav-menu.active {
         left: 0;
     }
 
+    .nav-menu li {
+        margin: 1rem 0;
+    }
+
+    .nav-menu a {
+        display: block;
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: var(--text-primary);
+        text-decoration: none;
+        border-radius: 8px;
+        margin: 0 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .nav-menu a:hover {
+        background-color: rgba(99, 102, 241, 0.1);
+        color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+
     .hero-buttons {
         flex-direction: column;
         align-items: center;
+        gap: 1rem;
     }
 
     .hero {

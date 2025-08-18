@@ -419,18 +419,34 @@ class ParticleSystem {
 // Navigation functionality
 class Navigation {
     constructor() {
+        this.init();
+    }
+
+    init() {
+        // Aguardar DOM carregar completamente
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.setupNavigation());
+        } else {
+            this.setupNavigation();
+        }
+    }
+
+    setupNavigation() {
         this.navbar = document.querySelector('.navbar');
         this.hamburger = document.querySelector('.hamburger');
         this.navMenu = document.querySelector('.nav-menu');
         this.navLinks = document.querySelectorAll('.nav-menu a');
         
-        this.init();
-    }
+        if (!this.navbar || !this.hamburger || !this.navMenu) {
+            console.error('[Navigation] Required elements not found');
+            return;
+        }
 
-    init() {
         this.setupScrollEffect();
         this.setupMobileMenu();
         this.setupSmoothScrolling();
+        
+        console.log('[Navigation] Mobile menu initialized successfully');
     }
 
     setupScrollEffect() {
@@ -446,17 +462,48 @@ class Navigation {
     }
 
     setupMobileMenu() {
-        this.hamburger.addEventListener('click', () => {
+        this.hamburger.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const isActive = this.navMenu.classList.contains('active');
+            
             this.navMenu.classList.toggle('active');
             this.hamburger.classList.toggle('active');
+            
+            // Update ARIA attributes
+            this.hamburger.setAttribute('aria-expanded', !isActive);
+            
+            console.log('[Navigation] Menu toggled:', !isActive ? 'opened' : 'closed');
         });
 
+        // Close menu when clicking on links
         this.navLinks.forEach(link => {
             link.addEventListener('click', () => {
-                this.navMenu.classList.remove('active');
-                this.hamburger.classList.remove('active');
+                this.closeMenu();
             });
         });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!this.navbar.contains(e.target) && this.navMenu.classList.contains('active')) {
+                this.closeMenu();
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.navMenu.classList.contains('active')) {
+                this.closeMenu();
+            }
+        });
+    }
+
+    closeMenu() {
+        this.navMenu.classList.remove('active');
+        this.hamburger.classList.remove('active');
+        this.hamburger.setAttribute('aria-expanded', 'false');
+        console.log('[Navigation] Menu closed');
     }
 
     setupSmoothScrolling() {
