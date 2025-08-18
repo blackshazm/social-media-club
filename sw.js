@@ -11,15 +11,16 @@ const urlsToCache = [
 
 // Install event
 self.addEventListener('install', (event) => {
-    console.log('[SW] Installing...');
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log('[SW] Caching resources');
                 return cache.addAll(urlsToCache.map(url => new Request(url, {cache: 'reload'})));
             })
             .catch((error) => {
-                console.log('[SW] Cache failed:', error);
+                // Log apenas se necessário
+                if (self.location.hostname === 'localhost') {
+                    console.log('[SW] Cache failed:', error);
+                }
             })
     );
     self.skipWaiting();
@@ -52,13 +53,11 @@ self.addEventListener('fetch', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-    console.log('[SW] Activating...');
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log('[SW] Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })

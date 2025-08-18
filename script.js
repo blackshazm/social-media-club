@@ -1,8 +1,11 @@
-// Performance monitoring com throttling
+// Performance monitoring com throttling (produção)
 const performanceObserver = new PerformanceObserver((list) => {
     list.getEntries().forEach((entry) => {
         if (entry.entryType === 'largest-contentful-paint') {
-            console.log('[Performance] LCP:', entry.startTime.toFixed(0) + 'ms');
+            // Log apenas em desenvolvimento
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                console.log('[Performance] LCP:', entry.startTime.toFixed(0) + 'ms');
+            }
         }
     });
 });
@@ -10,8 +13,7 @@ const performanceObserver = new PerformanceObserver((list) => {
 try {
     performanceObserver.observe({entryTypes: ['largest-contentful-paint']});
 } catch (e) {
-    // Fallback para navegadores antigos
-    console.log('[Performance] LCP monitoring not supported');
+    // Fallback silencioso para navegadores antigos
 }
 
 // Intersection Observer para lazy loading
@@ -438,7 +440,10 @@ class Navigation {
         this.navLinks = document.querySelectorAll('.nav-menu a');
         
         if (!this.navbar || !this.hamburger || !this.navMenu) {
-            console.error('[Navigation] Required elements not found');
+            // Log apenas em desenvolvimento
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                console.error('[Navigation] Required elements not found');
+            }
             return;
         }
 
@@ -446,7 +451,10 @@ class Navigation {
         this.setupMobileMenu();
         this.setupSmoothScrolling();
         
-        console.log('[Navigation] Mobile menu initialized successfully');
+        // Log apenas em desenvolvimento
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.log('[Navigation] Mobile menu initialized successfully');
+        }
     }
 
     setupScrollEffect() {
@@ -474,7 +482,10 @@ class Navigation {
             // Update ARIA attributes
             this.hamburger.setAttribute('aria-expanded', !isActive);
             
-            console.log('[Navigation] Menu toggled:', !isActive ? 'opened' : 'closed');
+            // Log apenas em desenvolvimento
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                console.log('[Navigation] Menu toggled:', !isActive ? 'opened' : 'closed');
+            }
         });
 
         // Close menu when clicking on links
@@ -503,7 +514,11 @@ class Navigation {
         this.navMenu.classList.remove('active');
         this.hamburger.classList.remove('active');
         this.hamburger.setAttribute('aria-expanded', 'false');
-        console.log('[Navigation] Menu closed');
+        
+        // Log apenas em desenvolvimento
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.log('[Navigation] Menu closed');
+        }
     }
 
     setupSmoothScrolling() {
