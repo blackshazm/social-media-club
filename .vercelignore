@@ -1,0 +1,16 @@
+# Vercel Ignore - Incluir todos os arquivos necessários
+# Ignorar apenas arquivos desnecessários
+
+*.log
+.env*
+.DS_Store
+node_modules/
+.git/
+.github/
+.vscode/
+
+# Manter todos os outros arquivos para deploy
+!robots.txt
+!sitemap.xml
+!sw.js
+!*.md
