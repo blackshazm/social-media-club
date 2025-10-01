@@ -31,7 +31,7 @@
     <link rel="manifest" href="/manifest.json">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     
@@ -476,10 +476,19 @@
     </script>
     
     <!-- Vercel Speed Insights -->
-    <script type="module">
-        import { injectSpeedInsights } from 'https://unpkg.com/@vercel/speed-insights@1.0.12/dist/index.js';
-        injectSpeedInsights();
-    </script>
+     <script>
+         // Speed Insights será automaticamente injetado pelo Vercel em produção
+         if (window.location.hostname !== 'localhost') {
+             const script = document.createElement('script');
+             script.src = 'https://unpkg.com/@vercel/speed-insights@1.0.12/dist/index.js';
+             script.onload = function() {
+                 if (window.speedInsights) {
+                     window.speedInsights.injectSpeedInsights();
+                 }
+             };
+             document.head.appendChild(script);
+         }
+     </script>
 </body>
 </html>
 

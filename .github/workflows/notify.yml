@@ -1,0 +1,119 @@
+name: Deploy Notifications
+
+on:
+  workflow_run:
+    workflows: ["Deploy to Vercel"]
+    types:
+      - completed
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion != 'cancelled' }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Get deployment info
+        id: deployment
+        run: |
+          if [ "${{ github.event.workflow_run.conclusion }}" == "success" ]; then
+            echo "status=✅ Sucesso" >> $GITHUB_OUTPUT
+            echo "color=good" >> $GITHUB_OUTPUT
+            echo "message=Deploy realizado com sucesso!" >> $GITHUB_OUTPUT
+          else
+            echo "status=❌ Falha" >> $GITHUB_OUTPUT
+            echo "color=danger" >> $GITHUB_OUTPUT
+            echo "message=Deploy falhou. Verifique os logs." >> $GITHUB_OUTPUT
+          fi
+          
+          echo "branch=${{ github.event.workflow_run.head_branch }}" >> $GITHUB_OUTPUT
+          echo "commit=${{ github.event.workflow_run.head_sha }}" >> $GITHUB_OUTPUT
+          echo "author=${{ github.event.workflow_run.head_commit.author.name }}" >> $GITHUB_OUTPUT
+          echo "url=https://social-media-club.vercel.app" >> $GITHUB_OUTPUT
+          
+      - name: Create deployment summary
+        run: |
+          echo "## 🚀 Deploy Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ${{ steps.deployment.outputs.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** \`${{ steps.deployment.outputs.branch }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ steps.deployment.outputs.commit }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Author:** ${{ steps.deployment.outputs.author }}" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** [${{ steps.deployment.outputs.url }}](${{ steps.deployment.outputs.url }})" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          
+      - name: Comment on PR (if applicable)
+        if: github.event.workflow_run.event == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: pullRequests } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${context.repo.owner}:${{ steps.deployment.outputs.branch }}`,
+              state: 'open'
+            });
+            
+            if (pullRequests.length > 0) {
+              const pr = pullRequests[0];
+              const status = '${{ steps.deployment.outputs.status }}';
+              const url = '${{ steps.deployment.outputs.url }}';
+              
+              const comment = `## 🚀 Deploy Preview
+              
+              **Status:** ${status}
+              **Preview URL:** [${url}](${url})
+              **Branch:** \`${{ steps.deployment.outputs.branch }}\`
+              **Commit:** \`${{ steps.deployment.outputs.commit }}\`
+              
+              ---
+              *Automated deployment notification*`;
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: comment
+              });
+            }
+            
+      - name: Send webhook notification (optional)
+        if: env.WEBHOOK_URL != ''
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+        run: |
+          curl -X POST "$WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "text": "Deploy ${{ steps.deployment.outputs.status }}",
+              "attachments": [
+                {
+                  "color": "${{ steps.deployment.outputs.color }}",
+                  "fields": [
+                    {
+                      "title": "Status",
+                      "value": "${{ steps.deployment.outputs.status }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Branch",
+                      "value": "${{ steps.deployment.outputs.branch }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Author",
+                      "value": "${{ steps.deployment.outputs.author }}",
+                      "short": true
+                    },
+                    {
+                      "title": "URL",
+                      "value": "${{ steps.deployment.outputs.url }}",
+                      "short": false
+                    }
+                  ]
+                }
+              ]
+            }' || echo "Webhook notification failed (optional)"

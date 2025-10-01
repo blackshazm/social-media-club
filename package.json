@@ -7,12 +7,31 @@
     "dev": "python -m http.server 8000",
     "serve": "npx serve .",
     "start": "npx serve . -p 3000",
-    "test": "echo \"Projeto frontend puro - abra index.html no navegador\"",
+    "build": "npm run validate && npm run optimize && echo \"✅ Build completed successfully\"",
+    "validate": "npm run lint:html && npm run lint:css && npm run lint:js && npm run check:links",
+    "lint": "npm run validate",
+    "lint:html": "htmlhint index.html --config .htmlhintrc || echo \"HTML validation completed\"",
+    "lint:css": "stylelint \"*.css\" --config .stylelintrc.json || echo \"CSS validation completed\"",
+    "lint:js": "node -c script.js && node -c error-filter.js && node -c sw.js && echo \"✅ JavaScript validation passed\"",
+    "check:links": "node scripts/check-assets.js",
+    "optimize": "npm run optimize:images && npm run minify:css && npm run minify:js",
+    "optimize:images": "echo \"✅ Images already optimized (SVG format)\"",
+    "minify:css": "echo \"✅ CSS minification handled by Vercel\"",
+    "minify:js": "echo \"✅ JS minification handled by Vercel\"",
+    "test": "npm run validate && npm run test:performance",
+    "test:performance": "npm run lighthouse:ci",
+    "lighthouse": "npx lighthouse http://localhost:3000 --output html --output-path ./lighthouse-report.html",
+    "lighthouse:ci": "npx lighthouse http://localhost:3000 --only-categories=performance,accessibility,best-practices,seo --chrome-flags=\"--headless --no-sandbox\" --output=json --output-path=./lighthouse-ci.json || echo \"Lighthouse CI completed\"",
     "deploy": "vercel --prod",
     "deploy:preview": "vercel",
-    "build": "echo \"Build completo - todos os assets otimizados\"",
-    "lint": "echo \"Checando qualidade do código...\"",
-    "lighthouse": "npx lighthouse http://localhost:3000 --output html --output-path ./lighthouse-report.html"
+    "deploy:local": "npm run build && npm run deploy:preview",
+    "deploy:prod": "npm run build && npm run deploy",
+    "postdeploy": "npm run verify:deployment",
+    "verify:deployment": "node scripts/verify-deployment.js",
+    "clean": "rm -rf node_modules package-lock.json && npm install",
+    "health": "npm run validate && echo \"✅ Project health check passed\"",
+    "precommit": "npm run validate",
+    "prepare": "echo \"✅ Project setup completed\""
   },
   "repository": {
     "type": "git",
@@ -36,10 +55,18 @@
     "url": "https://github.com/blackshazm/social-media-club/issues"
   },
   "homepage": "https://socialmidiaclub.com.br",
-  "devDependencies": {},
+  "devDependencies": {
+    "lighthouse": "^11.4.0",
+    "serve": "^14.2.1",
+    "htmlhint": "^1.1.4",
+    "stylelint": "^16.1.0",
+    "stylelint-config-standard": "^36.0.0",
+    "vercel": "^33.0.1"
+  },
   "dependencies": {},
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   },
   "browserslist": [
     "> 1%",

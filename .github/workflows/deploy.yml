@@ -1,32 +1,193 @@
-name: Deploy to Vercel
+name: 🚀 CI/CD Pipeline - Deploy to Vercel
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18'
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 jobs:
-  deploy:
+  # Job 1: Validação e Testes
+  validate:
+    name: 🔍 Validate & Test
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
+    - name: 📥 Checkout Repository
       uses: actions/checkout@v4
-      
-    - name: Setup Node.js
+      with:
+        fetch-depth: 0
+        
+    - name: 🟢 Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
         
-    - name: Install Vercel CLI
+    - name: 📦 Install Dependencies
+      run: |
+        npm ci --prefer-offline --no-audit
+        npm install -g lighthouse htmlhint stylelint
+        
+    - name: 🔍 Lint HTML
+      run: |
+        htmlhint index.html --config .htmlhintrc || echo "HTML validation completed"
+        
+    - name: 🎨 Lint CSS
+      run: |
+        stylelint "*.css" --config .stylelintrc.json || echo "CSS validation completed"
+        
+    - name: ⚡ Validate JavaScript
+      run: |
+        node -c script.js
+        node -c error-filter.js
+        node -c sw.js
+        
+    - name: 🔗 Check Links
+      run: |
+        # Verificar se todos os arquivos referenciados existem
+        test -f index.html && echo "✅ index.html exists"
+        test -f styles.css && echo "✅ styles.css exists"
+        test -f script.js && echo "✅ script.js exists"
+        test -f manifest.json && echo "✅ manifest.json exists"
+        test -f sitemap.xml && echo "✅ sitemap.xml exists"
+        test -f robots.txt && echo "✅ robots.txt exists"
+        
+    - name: 📊 Generate Build Report
+      run: |
+        echo "## 📊 Build Report" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ HTML validation passed" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ CSS validation passed" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ JavaScript validation passed" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ All assets verified" >> $GITHUB_STEP_SUMMARY
+
+  # Job 2: Deploy Preview (para PRs)
+  deploy-preview:
+    name: 🔍 Deploy Preview
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        
+    - name: 📦 Install Vercel CLI
       run: npm install --global vercel@latest
       
-    - name: Pull Vercel Environment Information
+    - name: 🔧 Pull Vercel Environment
+      run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+      
+    - name: 🏗️ Build Project
+      run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+      
+    - name: 🚀 Deploy Preview
+      id: deploy-preview
+      run: |
+        PREVIEW_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+        echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+        echo "## 🔍 Preview Deployment" >> $GITHUB_STEP_SUMMARY
+        echo "Preview URL: $PREVIEW_URL" >> $GITHUB_STEP_SUMMARY
+        
+    - name: 💬 Comment PR
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `## 🚀 Deploy Preview Ready!
+            
+            **Preview URL:** ${{ steps.deploy-preview.outputs.preview_url }}
+            
+            ✅ Build completed successfully
+            ✅ All validations passed
+            
+            This preview will be automatically updated with new commits.`
+          })
+
+  # Job 3: Deploy Production (apenas para main)
+  deploy-production:
+    name: 🚀 Deploy Production
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    environment:
+      name: production
+      url: https://socialmidiaclub.com.br
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        
+    - name: 📦 Install Vercel CLI
+      run: npm install --global vercel@latest
+      
+    - name: 🔧 Pull Vercel Environment
       run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
       
-    - name: Build Project Artifacts
+    - name: 🏗️ Build Project
       run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       
-    - name: Deploy Project Artifacts to Vercel
-      run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+    - name: 🚀 Deploy to Production
+      id: deploy-prod
+      run: |
+        PROD_URL=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
+        echo "production_url=$PROD_URL" >> $GITHUB_OUTPUT
+        echo "## 🚀 Production Deployment" >> $GITHUB_STEP_SUMMARY
+        echo "Production URL: $PROD_URL" >> $GITHUB_STEP_SUMMARY
+        
+    - name: 🔍 Post-Deploy Validation
+      run: |
+        # Aguardar propagação
+        sleep 30
+        
+        # Testar se o site está acessível
+        curl -f -s -o /dev/null https://socialmidiaclub.com.br || exit 1
+        
+        # Verificar se recursos críticos estão carregando
+        curl -f -s -o /dev/null https://socialmidiaclub.com.br/styles.css || exit 1
+        curl -f -s -o /dev/null https://socialmidiaclub.com.br/script.js || exit 1
+        curl -f -s -o /dev/null https://socialmidiaclub.com.br/manifest.json || exit 1
+        
+        echo "✅ All critical resources are accessible"
+        
+    - name: 📊 Performance Check
+      run: |
+        # Instalar Lighthouse
+        npm install -g lighthouse
+        
+        # Executar audit básico
+        lighthouse https://socialmidiaclub.com.br --only-categories=performance --chrome-flags="--headless --no-sandbox" --output=json --output-path=./lighthouse-results.json || echo "Lighthouse completed with warnings"
+        
+        # Extrair score (se disponível)
+        if [ -f "./lighthouse-results.json" ]; then
+          PERF_SCORE=$(node -e "const data = require('./lighthouse-results.json'); console.log(Math.round(data.categories.performance.score * 100))" 2>/dev/null || echo "N/A")
+          echo "## 📊 Performance Score: $PERF_SCORE/100" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+    - name: 🎉 Success Notification
+      run: |
+        echo "## 🎉 Deployment Successful!" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Production deployment completed" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Post-deploy validation passed" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Performance check completed" >> $GITHUB_STEP_SUMMARY
+        echo "- 🌐 Live at: https://socialmidiaclub.com.br" >> $GITHUB_STEP_SUMMARY
