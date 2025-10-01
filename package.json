@@ -56,14 +56,13 @@
   },
   "homepage": "https://socialmidiaclub.com.br",
   "devDependencies": {
+    "htmlhint": "^1.1.4",
     "lighthouse": "^11.4.0",
     "serve": "^14.2.1",
-    "htmlhint": "^1.1.4",
     "stylelint": "^16.1.0",
     "stylelint-config-standard": "^36.0.0",
     "vercel": "^33.0.1"
   },
-  "dependencies": {},
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
