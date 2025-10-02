@@ -349,7 +349,7 @@
                     </div>
                 </div>
                 
-                <form class="contact-form">
+                <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" id="contactForm">
                     <div class="form-group">
                         <input type="text" id="name" name="name" required>
                         <label for="name">Seu Nome</label>
@@ -377,12 +377,30 @@
                     </div>
                     
                     <div class="form-group">
-                        <textarea id="message" name="message" rows="4" required></textarea>
+                        <textarea id="message" name="message" rows="4" required placeholder="Conte-nos sobre seu projeto e objetivos..."></textarea>
                         <label for="message">Sua Mensagem</label>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+                    <!-- Campos ocultos para melhor organização -->
+                    <input type="hidden" name="_subject" value="Nova mensagem do site Social Media Club">
+                    <input type="hidden" name="_replyto" value="">
+                    <input type="hidden" name="_next" value="https://socialmidiaclub.com.br/obrigado.html">
+                    
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <span class="btn-text">Enviar Mensagem</span>
+                        <span class="btn-loading" style="display: none;">Enviando...</span>
+                    </button>
                 </form>
+                
+                <!-- Mensagem de sucesso/erro -->
+                <div id="form-messages" style="display: none; margin-top: 1rem;">
+                    <div id="success-message" class="alert alert-success" style="display: none;">
+                        ✅ Mensagem enviada com sucesso! Entraremos em contato em breve.
+                    </div>
+                    <div id="error-message" class="alert alert-error" style="display: none;">
+                        ❌ Erro ao enviar mensagem. Tente novamente ou entre em contato pelo WhatsApp.
+                    </div>
+                </div>
             </div>
         </div>
     </section>

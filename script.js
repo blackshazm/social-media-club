@@ -763,6 +763,137 @@ style.textContent = `
             opacity: 1;
         }
     }
+    
+    .alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 0.5rem 0;
+        font-weight: 500;
+    }
+    
+    .alert-success {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+    }
+    
+    .alert-error {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+    }
 `;
 document.head.appendChild(style);
+
+// Formulário de Contato
+document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+    const formMessages = document.getElementById('form-messages');
+    const successMessage = document.getElementById('success-message');
+    const errorMessage = document.getElementById('error-message');
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Mostrar loading
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline';
+            
+            // Ocultar mensagens anteriores
+            formMessages.style.display = 'none';
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            try {
+                const formData = new FormData(contactForm);
+                
+                // Configurar o email de resposta
+                formData.set('_replyto', formData.get('email'));
+                
+                const response = await fetch(contactForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    // Sucesso
+                    formMessages.style.display = 'block';
+                    successMessage.style.display = 'block';
+                    contactForm.reset();
+                    
+                    // Analytics - rastrear conversão
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'form_submit', {
+                            event_category: 'contact',
+                            event_label: 'contact_form'
+                        });
+                    }
+                } else {
+                    throw new Error('Erro no servidor');
+                }
+            } catch (error) {
+                // Erro
+                formMessages.style.display = 'block';
+                errorMessage.style.display = 'block';
+                
+                // Log do erro para debug
+                console.error('Erro ao enviar formulário:', error);
+            } finally {
+                // Restaurar botão
+                submitBtn.disabled = false;
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
+                
+                // Auto-ocultar mensagens após 5 segundos
+                setTimeout(() => {
+                    formMessages.style.display = 'none';
+                }, 5000);
+            }
+        });
+        
+        // Validação em tempo real
+        const inputs = contactForm.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                validateField(this);
+            });
+        });
+    }
+    
+    function validateField(field) {
+        const value = field.value.trim();
+        const isRequired = field.hasAttribute('required');
+        
+        // Remover classes de validação anteriores
+        field.classList.remove('field-valid', 'field-invalid');
+        
+        if (isRequired && !value) {
+            field.classList.add('field-invalid');
+            return false;
+        }
+        
+        // Validação específica por tipo
+        if (field.type === 'email' && value) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                field.classList.add('field-invalid');
+                return false;
+            }
+        }
+        
+        if (value || !isRequired) {
+            field.classList.add('field-valid');
+        }
+        
+        return true;
+    }
+});
 
