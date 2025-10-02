@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "social-media-club",
   "trailingSlash": false,
   "cleanUrls": true,
   "buildCommand": "npm run build",
@@ -11,8 +10,7 @@
   "github": {
     "enabled": true,
     "autoAlias": true,
-    "autoJobCancelation": true,
-    "silent": false
+    "autoJobCancelation": true
   },
   "git": {
     "deploymentEnabled": {
@@ -125,20 +123,7 @@
         }
       ]
     }
-  ],
-  "functions": {
-    "app/api/**/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "regions": ["gru1", "iad1"],
-  "env": {
-    "NODE_ENV": "production"
-  },
-  "build": {
-    "env": {
-      "NODE_ENV": "production",
-      "NEXT_TELEMETRY_DISABLED": "1"
-    }
-  }
+  ]
+
+
 }
