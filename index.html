@@ -510,16 +510,75 @@
     ]
     </script>
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <!-- Google Tag Manager HEAD -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+    
+    <!-- Google Analytics 4 via GTM -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'GA_MEASUREMENT_ID');
+        
+        // GA4 Configuration with Enhanced Ecommerce
+        gtag('config', 'G-XXXXXXXXXX', {
+            // Performance and privacy settings
+            'page_title': document.title,
+            'page_location': window.location.href,
+            'send_page_view': true,
+            'anonymize_ip': true,
+            'allow_google_signals': true,
+            'cookie_expires': 63072000, // 2 years
+            'cookie_flags': 'SameSite=None;Secure',
+            // Enhanced ecommerce settings
+            'custom_map': {
+                'custom_parameter_1': 'service_type',
+                'custom_parameter_2': 'lead_source'
+            }
+        });
+        
+        // Facebook Pixel
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        
+        fbq('init', 'FACEBOOK_PIXEL_ID');
+        fbq('track', 'PageView');
+        
+        // LinkedIn Insight Tag
+        _linkedin_partner_id = "LINKEDIN_PARTNER_ID";
+        window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+        window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+        
+        (function(l) {
+            if (!l){window.lintrk = function(a,b){window.lintrk.q.push([a,b])};
+            window.lintrk.q=[]}
+            var s = document.getElementsByTagName("script")[0];
+            var b = document.createElement("script");
+            b.type = "text/javascript";b.async = true;
+            b.src = "https://snap.licdn.com/li.js";
+            s.parentNode.insertBefore(b, s);})(window.lintrk);
     </script>
 </head>
 <body>
+    <!-- Google Tag Manager BODY (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+    <!-- Facebook Pixel noscript -->
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"
+    /></noscript>
+    
     <!-- Skip Links for Accessibility -->
     <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
     <a href="#nav-menu" class="skip-link">Pular para o menu de navegação</a>
@@ -561,8 +620,8 @@
                 Você se sente frustrado por investir em marketing e não ver resultados? Sabemos como é difícil ver a concorrência crescer enquanto sua marca parece invisível online. Isso não precisa ser assim.
             </p>
             <div class="hero-buttons">
-                <a href="#contact" class="btn btn-primary" aria-label="Agendar diagnóstico estratégico gratuito para seu negócio" role="button">Agendar Diagnóstico Gratuito</a>
-                <a href="#about" class="btn btn-secondary" aria-label="Conhecer mais sobre nossos serviços de marketing digital" role="button">Conhecer Mais</a>
+                <a href="#contact" class="btn btn-primary" aria-label="Agendar diagnóstico estratégico gratuito para seu negócio" role="button" onclick="trackCustomEvent('cta_hero_primary', {button_text: 'Agendar Diagnóstico Gratuito', position: 'hero'})">Agendar Diagnóstico Gratuito</a>
+                <a href="#about" class="btn btn-secondary" aria-label="Conhecer mais sobre nossos serviços de marketing digital" role="button" onclick="trackCustomEvent('cta_hero_secondary', {button_text: 'Conhecer Mais', position: 'hero'})">Conhecer Mais</a>
             </div>
             
             <!-- Social Share Buttons Otimizados para Google e IA -->
@@ -642,7 +701,7 @@
                     </div>
                 </div>
                 <div class="about-image">
-                    <div class="image-placeholder" role="img" aria-label="Equipe Social Media Club - Especialistas em Marketing Digital">
+                    <div class="image-placeholder lazy-load" role="img" aria-label="Equipe Social Media Club - Especialistas em Marketing Digital" data-bg="linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1))">
                         <i class="fas fa-users" aria-hidden="true"></i>
                         <span class="sr-only">Ilustração representando a equipe especializada do Social Media Club</span>
                     </div>
@@ -951,7 +1010,7 @@
                     <input type="hidden" name="_replyto" value="">
                     <input type="hidden" name="_next" value="https://socialmidiaclub.com.br/obrigado.html">
                     
-                    <button type="submit" class="btn btn-primary" id="submitBtn" aria-label="Enviar formulário de contato para Social Media Club">
+                    <button type="submit" class="btn btn-primary" id="submitBtn" aria-label="Enviar formulário de contato para Social Media Club" onclick="trackCustomEvent('form_start', {form_type: 'contact', step: 'submit_attempt'})">
                         <span class="btn-text">Enviar Mensagem</span>
                         <span class="btn-loading" style="display: none;" aria-hidden="true">Enviando...</span>
                     </button>
@@ -1080,9 +1139,16 @@
         }
     </script>
     
+    <!-- Core Web Vitals Optimizer (High Priority) -->
+    <script src="core-web-vitals.js"></script>
+    
+    <!-- Cookie Consent (Load Second) -->
+    <script src="cookie-consent.js"></script>
+    
     <!-- Load Non-Critical Scripts Deferred -->
     <script defer src="error-filter.js"></script>
     <script defer src="script-optimized.js"></script>
+    <script defer src="analytics-advanced.js"></script>
     
     <!-- Optimized Service Worker Registration -->
     <script>
