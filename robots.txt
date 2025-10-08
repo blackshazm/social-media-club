@@ -1,13 +1,32 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /*.json$
+Disallow: /error-filter.js
+Disallow: /sw-optimized.js
+
+# Crawl-delay para bots menos importantes
+User-agent: MJ12bot
+Crawl-delay: 10
+
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+# Permitir bots importantes
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
 
 # Sitemap
 Sitemap: https://socialmidiaclub.com.br/sitemap.xml
 
-# Otimizações para crawlers
-Crawl-delay: 1
-
-# Bloquear recursos desnecessários
+# Host principal
+Host: https://socialmidiaclub.com.br
 Disallow: /node_modules/
 Disallow: /.git/
 Disallow: /.vscode/

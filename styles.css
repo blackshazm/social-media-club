@@ -664,6 +664,167 @@ img, video, iframe {
     color: var(--primary-color);
 }
 
+/* FAQ Section Styles */
+.faq-grid {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: var(--card-background);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-light);
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--primary-color);
+}
+
+.faq-item h3 {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.faq-answer {
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.faq-answer p {
+    margin: 0;
+}
+
+.faq-answer strong {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .faq-item {
+        padding: 1.2rem;
+    }
+    
+    .faq-item h3 {
+        font-size: 1.1rem;
+    }
+}
+
+/* Social Share Buttons */
+.social-share-hero {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.share-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.share-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.share-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+}
+
+.share-btn.whatsapp {
+    background: rgba(37, 211, 102, 0.2);
+    color: #25d366;
+    border: 1px solid rgba(37, 211, 102, 0.3);
+}
+
+.share-btn.whatsapp:hover {
+    background: rgba(37, 211, 102, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+}
+
+.share-btn.linkedin {
+    background: rgba(0, 119, 181, 0.2);
+    color: #0077b5;
+    border: 1px solid rgba(0, 119, 181, 0.3);
+}
+
+.share-btn.linkedin:hover {
+    background: rgba(0, 119, 181, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 119, 181, 0.4);
+}
+
+.share-btn.facebook {
+    background: rgba(24, 119, 242, 0.2);
+    color: #1877f2;
+    border: 1px solid rgba(24, 119, 242, 0.3);
+}
+
+.share-btn.facebook:hover {
+    background: rgba(24, 119, 242, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4);
+}
+
+.share-btn.copy {
+    background: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.share-btn.copy:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.share-btn i {
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .share-buttons {
+        gap: 0.6rem;
+    }
+    
+    .share-btn {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    
+    .share-btn span {
+        display: none;
+    }
+    
+    .share-btn i {
+        font-size: 1.1rem;
+    }
+}
+
 .contact-form {
     background: var(--bg-primary);
     padding: 2.5rem;
