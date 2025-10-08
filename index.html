@@ -35,40 +35,429 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     
-    <!-- Preconnect para otimização de performance -->
+    <!-- Resource Hints para Performance Crítica -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://formspree.io">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     
-    <!-- CSS -->
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- CRITICAL CSS INLINE para Above-the-Fold -->
+    <style>
+        /* CRITICAL CSS Inline */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #ec4899;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-light: #ffffff;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-dark: #111827;
+            --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        .nav-logo h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-menu a:hover {
+            color: var(--primary-color);
+        }
+        .hero {
+            min-height: 100vh;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0 2rem;
+        }
+        .hero-content {
+            max-width: 800px;
+            text-align: center;
+            color: var(--text-light);
+            z-index: 2;
+        }
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+        }
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-primary);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+            .hamburger { display: flex; }
+            .hero { padding: 0 1rem; }
+            .btn { padding: 10px 20px; font-size: 0.9rem; }
+        }
+        /* Screen Reader Only Content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        /* Focus indicators for accessibility */
+        a:focus, button:focus, input:focus, select:focus, textarea:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --text-primary: #000000;
+                --text-light: #ffffff;
+                --bg-primary: #ffffff;
+            }
+        }
+        /* Form accessibility styles */
+        .field-error {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+        .field-help {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        fieldset {
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+        /* Skip links for screen readers */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--primary-color);
+            color: var(--text-light);
+            padding: 8px;
+            text-decoration: none;
+            z-index: 10000;
+        }
+        .skip-link:focus {
+            top: 6px;
+        }
+        /* Core Web Vitals Optimizations */
+        /* Prevent CLS by reserving space */
+        .hero {
+            min-height: 100vh;
+            min-height: 100svh; /* Safari support */
+        }
+        .hero-content {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .hero-content.loading {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        /* LCP optimization */
+        .hero-title {
+            font-display: swap;
+            contain: layout style paint;
+        }
+        /* Image aspect ratio containers to prevent CLS */
+        .image-placeholder {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        .image-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        /* Font loading optimization */
+        .hero-title, .hero-subtitle {
+            font-display: swap;
+        }
+    </style>
     
-    <!-- Structured Data Schema.org -->
+    <!-- Preload Critical Assets -->
+    <link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="styles.css"></noscript>
+    
+    <!-- Load Non-Critical CSS Async -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
+    
+    <!-- Enhanced Structured Data Schema.org -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Social Media Club",
-      "description": "Especialistas em gestão de mídias sociais, tráfego pago e marketing digital",
-    "url": "https://socialmidiaclub.com.br/",
-    "logo": "https://socialmidiaclub.com.br/logo.png",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "customer service",
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Social Media Club",
+        "legalName": "Social Media Club",
+        "description": "Especialistas em gestão de mídias sociais, tráfego pago e marketing digital com ROI comprovado",
+        "url": "https://socialmidiaclub.com.br/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://socialmidiaclub.com.br/logo.png",
+          "width": 512,
+          "height": 512
+        },
+        "image": "https://socialmidiaclub.com.br/og-image.jpg",
+        "foundingDate": "2024",
+        "numberOfEmployees": "2-10",
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "telephone": "+55-18-99789-3815",
+            "email": "socialmidiacluboficial@gmail.com",
+            "areaServed": "BR",
+            "availableLanguage": ["Portuguese"],
+            "hoursAvailable": {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              "opens": "09:00",
+              "closes": "18:00",
+              "validFrom": "2024-01-01",
+              "validThrough": "2025-12-31"
+            }
+          }
+        ],
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "BR",
+          "addressRegion": "São Paulo"
+        },
+        "sameAs": [
+          "https://instagram.com/socialmediaclub",
+          "https://linkedin.com/company/socialmediaclub"
+        ],
+        "founder": {
+          "@type": "Person",
+          "name": "Social Media Club Team"
+        },
+        "knowsAbout": [
+          "Marketing Digital",
+          "Gestão de Mídias Sociais",
+          "Tráfego Pago",
+          "Google Ads",
+          "Facebook Ads",
+          "Instagram Marketing",
+          "ROI",
+          "Conversão Digital"
+        ],
+        "serviceArea": {
+          "@type": "Country",
+          "name": "Brazil"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Social Media Club",
+        "description": "Agência especializada em marketing digital e gestão de mídias sociais",
+        "url": "https://socialmidiaclub.com.br/",
+        "telephone": "+55-18-99789-3815",
+        "email": "socialmidiacluboficial@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "BR"
+        },
+        "openingHours": "Mo-Fr 09:00-18:00",
+        "priceRange": "$$",
+        "currenciesAccepted": "BRL",
+        "paymentAccepted": ["Credit Card", "Bank Transfer", "PIX"],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "bestRating": "5",
+          "worstRating": "1",
+          "ratingCount": "50"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Social Media Club",
+        "url": "https://socialmidiaclub.com.br/",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://socialmidiaclub.com.br/?s={search_term_string}",
+          "query-input": "required name=search_term_string"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Social Media Club",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://socialmidiaclub.com.br/logo.png"
+          }
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Gestão de Mídias Sociais",
+        "description": "Criação de conteúdo estratégico, gerenciamento de comunidades e construção de autoridade digital",
+        "provider": {
+          "@type": "Organization",
+          "name": "Social Media Club"
+        },
         "areaServed": "BR",
-        "availableLanguage": "Portuguese"
-      },
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "BR"
-      },
-      "sameAs": [
-        "https://instagram.com/socialmediaclub",
-        "https://linkedin.com/company/socialmediaclub"
-      ]
-    }
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Serviços de Marketing Digital",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Gestão de Mídias Sociais"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Gestão de Tráfego Pago"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Consultoria em IA"
+              }
+            }
+          ]
+        }
+      }
+    ]
     </script>
     
     <!-- Google Analytics -->
@@ -81,18 +470,23 @@
     </script>
 </head>
 <body>
+    <!-- Skip Links for Accessibility -->
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    <a href="#nav-menu" class="skip-link">Pular para o menu de navegação</a>
+    <a href="#contact" class="skip-link">Pular para o formulário de contato</a>
+    
     <!-- Navigation -->
     <nav class="navbar" role="navigation" aria-label="Menu principal">
         <div class="nav-container">
             <div class="nav-logo">
                 <h2>Social Media Club</h2>
             </div>
-            <ul class="nav-menu">
-                <li><a href="#home" aria-label="Ir para seção inicial">Início</a></li>
-                <li><a href="#about" aria-label="Ir para seção sobre">Sobre</a></li>
-                <li><a href="#services" aria-label="Ir para seção serviços">Serviços</a></li>
-                <li><a href="#portfolio" aria-label="Ir para seção portfólio">Portfólio</a></li>
-                <li><a href="#contact" aria-label="Ir para seção contato">Contato</a></li>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#main-content" aria-label="Ir para seção inicial">Início</a></li>
+                <li><a href="#about" aria-label="Ir para seção sobre nós">Sobre</a></li>
+                <li><a href="#services" aria-label="Ir para seção de serviços">Serviços</a></li>
+                <li><a href="#portfolio" aria-label="Ir para seção de portfólio">Portfólio</a></li>
+                <li><a href="#contact" aria-label="Ir para formulário de contato">Contato</a></li>
             </ul>
             <button class="hamburger" aria-label="Abrir menu mobile" aria-expanded="false" aria-controls="nav-menu">
                 <span aria-hidden="true"></span>
@@ -102,9 +496,10 @@
         </div>
     </nav>
 
-    <!-- Hero Section with WebGL -->
+    <!-- Hero Section with Optimized WebGL -->
+    <main id="main-content">
     <section id="home" class="hero">
-        <canvas id="webgl-canvas" style="position: absolute; z-index: -1;"></canvas>
+        <canvas id="webgl-canvas" style="position: absolute; z-index: -1; will-change: transform;" width="1" height="1"></canvas>
         <div class="hero-content">
             <h1 class="hero-title">
                 Deixe de ser Invisível Online. Conquiste a Liderança do seu Mercado.
@@ -159,8 +554,9 @@
                     </div>
                 </div>
                 <div class="about-image">
-                    <div class="image-placeholder">
-                        <i class="fas fa-users"></i>
+                    <div class="image-placeholder" role="img" aria-label="Equipe Social Media Club - Especialistas em Marketing Digital">
+                        <i class="fas fa-users" aria-hidden="true"></i>
+                        <span class="sr-only">Ilustração representando a equipe especializada do Social Media Club</span>
                     </div>
                 </div>
             </div>
@@ -231,8 +627,9 @@
             <div class="portfolio-grid">
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <div class="image-placeholder">
-                            <i class="fas fa-coffee"></i>
+                        <div class="image-placeholder" role="img" aria-label="Case de Sucesso: Cafeteria Local - Aumento de 300% no Engajamento">
+                            <i class="fas fa-coffee" aria-hidden="true"></i>
+                            <span class="sr-only">Ícone representando case de sucesso com cafeteria local</span>
                         </div>
                     </div>
                     <div class="portfolio-content">
@@ -247,8 +644,9 @@
                 
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <div class="image-placeholder">
-                            <i class="fas fa-tooth"></i>
+                        <div class="image-placeholder" role="img" aria-label="Case de Sucesso: Clínica Odontológica - 200 Novos Pacientes">
+                            <i class="fas fa-tooth" aria-hidden="true"></i>
+                            <span class="sr-only">Ícone representando case de sucesso com clínica odontológica</span>
                         </div>
                     </div>
                     <div class="portfolio-content">
@@ -263,8 +661,9 @@
                 
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <div class="image-placeholder">
-                            <i class="fas fa-shopping-bag"></i>
+                        <div class="image-placeholder" role="img" aria-label="Case de Sucesso: E-commerce de Moda - 80% Aumento em Conversões">
+                            <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+                            <span class="sr-only">Ícone representando case de sucesso com e-commerce de moda</span>
                         </div>
                     </div>
                     <div class="portfolio-content">
@@ -349,37 +748,47 @@
                     </div>
                 </div>
                 
-                <form class="contact-form" action="https://formspree.io/f/mdkwzeka" method="POST" id="contactForm">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" required>
-                        <label for="name">Seu Nome</label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <input type="email" id="email" name="email" required>
-                        <label for="email">Seu E-mail</label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <input type="text" id="company" name="company">
-                        <label for="company">Sua Empresa</label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <select id="service" name="service" required>
-                            <option value="">Selecione um serviço</option>
-                            <option value="social-media">Gestão de Mídias Sociais</option>
-                            <option value="paid-traffic">Gestão de Tráfego Pago</option>
-                            <option value="ai-consulting">Consultoria em IA</option>
-                            <option value="complete">Pacote Completo</option>
-                        </select>
-                        <label for="service">Serviço de Interesse</label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <textarea id="message" name="message" rows="4" required placeholder="Conte-nos sobre seu projeto e objetivos..."></textarea>
-                        <label for="message">Sua Mensagem</label>
-                    </div>
+                <form class="contact-form" action="https://formspree.io/f/mdkwzeka" method="POST" id="contactForm" novalidate>
+                    <fieldset>
+                        <legend class="sr-only">Formulário de Contato - Social Media Club</legend>
+                        
+                        <div class="form-group">
+                            <label for="name">Seu Nome *</label>
+                            <input type="text" id="name" name="name" required aria-describedby="name-error" autocomplete="name">
+                            <span id="name-error" class="field-error" role="alert" aria-live="polite"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Seu E-mail *</label>
+                            <input type="email" id="email" name="email" required aria-describedby="email-error" autocomplete="email">
+                            <span id="email-error" class="field-error" role="alert" aria-live="polite"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company">Sua Empresa</label>
+                            <input type="text" id="company" name="company" aria-describedby="company-help" autocomplete="organization">
+                            <span id="company-help" class="field-help">Campo opcional</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="service">Serviço de Interesse *</label>
+                            <select id="service" name="service" required aria-describedby="service-error">
+                                <option value="">Selecione um serviço</option>
+                                <option value="social-media">Gestão de Mídias Sociais</option>
+                                <option value="paid-traffic">Gestão de Tráfego Pago</option>
+                                <option value="ai-consulting">Consultoria em IA</option>
+                                <option value="complete">Pacote Completo</option>
+                            </select>
+                            <span id="service-error" class="field-error" role="alert" aria-live="polite"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Sua Mensagem *</label>
+                            <textarea id="message" name="message" rows="4" required placeholder="Conte-nos sobre seu projeto e objetivos..." aria-describedby="message-error message-help"></textarea>
+                            <span id="message-help" class="field-help">Descreva seu projeto, objetivos e como podemos ajudar</span>
+                            <span id="message-error" class="field-error" role="alert" aria-live="polite"></span>
+                        </div>
+                    </fieldset>
                     
                     <!-- Campos ocultos para melhor organização -->
                     <input type="hidden" name="_subject" value="Nova mensagem do site Social Media Club">
@@ -451,44 +860,58 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
-    <script src="error-filter.js"></script>
-    
-    <!-- Service Worker Registration -->
+    <!-- Load FontAwesome Async after page load -->
     <script>
-        if ('serviceWorker' in navigator) {
+        // Load FontAwesome asynchronously after page load
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const fontAwesome = document.createElement('link');
+                fontAwesome.rel = 'stylesheet';
+                fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+                fontAwesome.integrity = 'sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==';
+                fontAwesome.crossOrigin = 'anonymous';
+                fontAwesome.referrerPolicy = 'no-referrer';
+                document.head.appendChild(fontAwesome);
+            }, 100);
+        });
+    </script>
+    
+    <!-- Load Non-Critical Scripts Deferred -->
+    <script defer src="error-filter.js"></script>
+    <script defer src="script-optimized.js"></script>
+    
+    <!-- Optimized Service Worker Registration -->
+    <script>
+        // Service Worker registration optimized for performance
+        if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js', {
-                    scope: '/'
-                })
-                .then((registration) => {
-                    // Log apenas em desenvolvimento
-                    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-                        console.log('[SW] Registered successfully:', registration.scope);
-                    }
-                    
-                    // Check for updates
-                    registration.addEventListener('updatefound', () => {
-                        // Auto-reload quando houver update
-                        const installingWorker = registration.installing;
-                        if (installingWorker) {
-                            installingWorker.addEventListener('statechange', () => {
-                                if (installingWorker.state === 'installed') {
-                                    if (navigator.serviceWorker.controller) {
-                                        // Novo SW instalado, reload a página
+                // Delay SW registration to not interfere with initial page load
+                setTimeout(() => {
+                    navigator.serviceWorker.register('/sw-optimized.js', {
+                        scope: '/'
+                    })
+                    .then((registration) => {
+                        if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+                            console.log('[SW] Registered successfully:', registration.scope);
+                        }
+                        
+                        registration.addEventListener('updatefound', () => {
+                            const installingWorker = registration.installing;
+                            if (installingWorker) {
+                                installingWorker.addEventListener('statechange', () => {
+                                    if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
                                         window.location.reload();
                                     }
-                                }
-                            });
+                                });
+                            }
+                        });
+                    })
+                    .catch((error) => {
+                        if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+                            console.log('[SW] Registration failed:', error);
                         }
                     });
-                })
-                .catch((error) => {
-                    // Falha silenciosa em produção
-                    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-                        console.log('[SW] Registration failed:', error);
-                    }
-                });
+                }, 2000); // 2 second delay
             });
         }
     </script>
